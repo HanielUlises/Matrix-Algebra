@@ -1,5 +1,6 @@
 #include <iostream>
 #include <Eigen/Dense>
+#include <vector>
 #include <print>
 
 #include "utils_print.h"
@@ -69,6 +70,33 @@ int main() {
     m2.col(0).swap(m2.col(3));
 
     utils::print("Modified m₂:", m2);
+
+    // Slicing
+    Eigen::Matrix<double, 5, 5> m_t;
+    A << 1, 2, 3, 4, 5,
+        6, 7, 8, 9, 10,
+        11, 12, 13, 14, 15,
+        16, 17, 18, 19, 20,
+        21, 22, 23, 24, 25;
+    
+    utils::print("m_t", m_t);
+    std::vector<Eigen::Index> rows = {1, 3, 4};
+    std::vector<Eigen::Index> columns = {0, 2};
+
+    Eigen::MatrixXd m_u = m_t(rows, columns);
+    utils::print("mu", m_u);
+
+    // Diagonal
+    utils::print("m_t diagonal", m_t.diagonal());
+
+    auto n = m_t.rows();
+    Eigen::VectorXd anti_diagonal(n);
+
+    for(int i = 0; i < n; i++)
+        anti_diagonal(i) = m_t(i, n - i -1);
+
+    utils::print("m_t antidiagonal", anti_diagonal);
+
 
     // Resizing and reshaping
     Eigen::Matrix<double, 2, 3> m3; m3.setRandom();
